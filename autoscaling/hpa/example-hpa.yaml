@@ -1,21 +1,19 @@
-apiVersion: autoscaling/v2
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: example-hpa
-  namespace: dev
+  name: my-dynamic-environment-app
+  namespace: team-dev
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: example-deployment
+    name: my-dynamic-environment-app
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 10
   metrics:
   - type: Resource
     resource:
       name: cpu
-      targetAverageUtilization: 50
-  - type: Resource
-    resource:
-      name: memory
-      targetAverageUtilization: 75
+      target:
+        type: Utilization
+        averageUtilization: 50
