@@ -57,6 +57,10 @@ jobs:
         run: |
           helm install my-dynamic-environment ./helm-chart -f ./helm-chart/values.yaml
 
+      - name: Create Namespace
+        run: |
+          kubectl create namespace team-dev || true
+
       - name: Apply Resource Quotas
         run: |
           kubectl apply -f namespaces/quotas/dev-quota.yaml
