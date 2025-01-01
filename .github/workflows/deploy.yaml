@@ -18,7 +18,7 @@ jobs:
         with:
           version: v0.11.1
 
-      - name: Set up kubectl
+      - name: Set up kubectl for kind
         uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
@@ -50,38 +50,80 @@ jobs:
       - name: Make setup-prometheus.sh executable
         run: chmod +x ./scripts/setup-prometheus.sh
 
-      - name: Deploy Prometheus and Grafana
+      - name: Deploy Prometheus and Grafana to kind
         run: ./scripts/setup-prometheus.sh
 
-      - name: Deploy Helm chart
+      - name: Deploy Helm chart to kind
         run: |
           helm install my-dynamic-environment ./helm-chart -f ./helm-chart/values.yaml
 
-      - name: Create Namespace
+      - name: Create Namespace in kind
         run: |
           kubectl create namespace team-dev || true
 
-      - name: Apply Resource Quotas
+      - name: Apply Resource Quotas in kind
         run: |
           kubectl apply -f namespaces/quotas/dev-quota.yaml
 
-      - name: Apply Horizontal Pod Autoscaler
+      - name: Apply Horizontal Pod Autoscaler in kind
         run: |
           kubectl apply -f autoscaling/hpa/example-hpa.yaml
 
-      - name: Verify deployment
+      - name: Verify deployment in kind
         run: |
           kubectl get all
           kubectl get ingress
 
-      - name: Debug Pods
+      - name: Debug Pods in kind
         run: |
           echo "Listing all pods:"
           kubectl get pods -A
           echo "Describing all pods in the default namespace:"
           kubectl describe pods
 
-      - name: Debug Events
+      - name: Debug Events in kind
         run: |
           echo "Listing all events:"
           kubectl get events -A
+
+      # - name: Set up kubectl for target cluster
+      #   uses: azure/setup-kubectl@v3
+      #   with:
+      #     version: 'latest'
+      #     config-file: ${{ secrets.KUBECONFIG }}
+
+      # - name: Deploy Prometheus and Grafana to target cluster
+      #   run: ./scripts/setup-prometheus.sh
+
+      # - name: Deploy Helm chart to target cluster
+      #   run: |
+      #     helm install my-dynamic-environment ./helm-chart -f ./helm-chart/values.yaml --kubeconfig ${{ secrets.KUBECONFIG }}
+
+      # - name: Create Namespace in target cluster
+      #   run: |
+      #     kubectl create namespace team-dev --kubeconfig ${{ secrets.KUBECONFIG }} || true
+
+      # - name: Apply Resource Quotas in target cluster
+      #   run: |
+      #     kubectl apply -f namespaces/quotas/dev-quota.yaml --kubeconfig ${{ secrets.KUBECONFIG }}
+
+      # - name: Apply Horizontal Pod Autoscaler in target cluster
+      #   run: |
+      #     kubectl apply -f autoscaling/hpa/example-hpa.yaml --kubeconfig ${{ secrets.KUBECONFIG }}
+
+      # - name: Verify deployment in target cluster
+      #   run: |
+      #     kubectl get all --kubeconfig ${{ secrets.KUBECONFIG }}
+      #     kubectl get ingress --kubeconfig ${{ secrets.KUBECONFIG }}
+
+      # - name: Debug Pods in target cluster
+      #   run: |
+      #     echo "Listing all pods:"
+      #     kubectl get pods -A --kubeconfig ${{ secrets.KUBECONFIG }}
+      #     echo "Describing all pods in the default namespace:"
+      #     kubectl describe pods --kubeconfig ${{ secrets.KUBECONFIG }}
+
+      # - name: Debug Events in target cluster
+      #   run: |
+      #     echo "Listing all events:"
+      #     kubectl get events -A --kubeconfig ${{ secrets.KUBECONFIG }}
