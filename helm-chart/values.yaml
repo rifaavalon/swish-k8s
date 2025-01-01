@@ -1,5 +1,5 @@
 environmentName: default-environment
-baseImage: golang:1.17
+baseImage: golang:1.23.3
 cpuRequest: "500m"
 memoryRequest: "1Gi"
 gpuRequest: ""
