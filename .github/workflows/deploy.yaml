@@ -74,12 +74,12 @@ jobs:
           echo "Listing all events:"
           kubectl get events -A
 
-      - name: Wait for Pod to be Ready
-        run: |
-          # Wait for the pod to be created and ready
-          kubectl wait --for=condition=ready pod -l app=my-dynamic-environment --timeout=300s
+      # - name: Wait for Pod to be Ready
+      #   run: |
+      #     # Wait for the pod to be created and ready
+      #     kubectl wait --for=condition=ready pod -l app=my-dynamic-environment --timeout=300s
 
-      - name: Show Running Pods
-        run: |
-          echo "Listing all running pods:"
-          kubectl get pods --field-selector=status.phase=Running
+      # - name: Show Running Pods
+      #   run: |
+      #     echo "Listing all running pods:"
+      #     kubectl get pods --field-selector=status.phase=Running
