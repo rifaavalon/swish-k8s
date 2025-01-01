@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-app
+  labels:
+    app: {{ .Release.Name }}-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-app
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-app
+    spec:
+      containers:
+      - name: go-app-container
+        image: {{ .Values.baseImage }}
+        resources:
+          requests:
+            memory: {{ .Values.memoryRequest }}
+            cpu: {{ .Values.cpuRequest }}
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        command: ["tail", "-f", "/dev/null"]
+      {{- if .Values.ssh.enabled }}
+      - name: ssh-server
+        image: atmoz/sftp
+        args: ["{{ .Values.ssh.user }}:{{ .Values.ssh.password }}:::upload"]
+        ports:
+        - containerPort: 22
+      {{- end }}

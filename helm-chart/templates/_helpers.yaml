@@ -1,0 +1,3 @@
+{{- define "dynamic-environment.fullname" -}}
+{{ .Release.Name }}
+{{- end -}}

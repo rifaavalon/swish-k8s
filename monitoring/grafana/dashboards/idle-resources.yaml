@@ -1,0 +1,56 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "idle-resources",
+    "title": "Idle Resources Dashboard",
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Idle CPU Pods",
+        "targets": [
+          {
+            "expr": "sum(rate(container_cpu_usage_seconds_total[5m])) by (pod) < 0.01",
+            "legendFormat": "{{pod}}",
+            "interval": ""
+          }
+        ],
+        "xaxis": {
+          "mode": "time"
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "CPU Usage",
+            "min": 0,
+            "max": null
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Idle Pods List",
+        "targets": [
+          {
+            "expr": "sum(rate(container_cpu_usage_seconds_total[5m])) by (pod, namespace) < 0.01",
+            "legendFormat": "{{pod}} ({{namespace}})",
+            "interval": ""
+          }
+        ],
+        "columns": [
+          {
+            "text": "Pod",
+            "value": "{{pod}}"
+          },
+          {
+            "text": "Namespace",
+            "value": "{{namespace}}"
+          }
+        ]
+      }
+    ]
+  }
+}

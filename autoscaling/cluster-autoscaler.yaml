@@ -1,0 +1,8 @@
+apiVersion: autoscaler.k8s.io/v1
+kind: ClusterAutoscaler
+metadata:
+  name: cluster-autoscaler
+spec:
+  cloudProvider: aws
+  autoDiscovery:
+    clusterName: your-cluster-name

@@ -1,0 +1,58 @@
+{
+    "dashboard": {
+      "id": null,
+      "uid": "resource-usage",
+      "title": "Resource Usage Dashboard",
+      "time": {
+        "from": "now-1h",
+        "to": "now"
+      },
+      "panels": [
+        {
+          "type": "graph",
+          "title": "CPU Usage vs Requests",
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total[5m])) by (pod) / sum(kube_pod_container_resource_requests{resource='cpu'}) by (pod)",
+              "legendFormat": "{{pod}}",
+              "interval": ""
+            }
+          ],
+          "xaxis": {
+            "mode": "time"
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "Usage vs Requests",
+              "min": 0,
+              "max": 1
+            }
+          ]
+        },
+        {
+          "type": "graph",
+          "title": "Memory Usage vs Requests",
+          "targets": [
+            {
+              "expr": "sum(container_memory_working_set_bytes) by (pod) / sum(kube_pod_container_resource_requests{resource='memory'}) by (pod)",
+              "legendFormat": "{{pod}}",
+              "interval": ""
+            }
+          ],
+          "xaxis": {
+            "mode": "time"
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "Usage vs Requests",
+              "min": 0,
+              "max": 1
+            }
+          ]
+        }
+      ]
+    }
+  }
+  

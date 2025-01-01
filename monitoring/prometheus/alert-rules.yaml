@@ -1,0 +1,11 @@
+groups:
+- name: resource-alerts
+  rules:
+  - alert: IdleEnvironment
+    expr: sum(rate(container_cpu_usage_seconds_total[5m])) by (pod, namespace) < 0.01
+    for: 30m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is idle"
+      description: "CPU usage is below 1% for the last 30 minutes."

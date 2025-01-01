@@ -1,0 +1,6 @@
+apiVersion: v2
+name: dynamic-environment
+description: A Helm chart to deploy dynamic environments for developers
+type: application
+version: 1.0.0
+appVersion: 1.0.0

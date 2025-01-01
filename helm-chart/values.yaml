@@ -1,0 +1,20 @@
+environmentName: default-environment
+baseImage: golang:1.17
+cpuRequest: "500m"
+memoryRequest: "1Gi"
+gpuRequest: ""
+packages:
+  - flask
+  - requests
+service:
+  type: ClusterIP
+  port: 8080
+ingress:
+  enabled: true
+  host: environment.example.com
+
+ssh:
+  enabled: true
+  user: "user"
+  password: "password"
+  host: "ssh.example.com"
