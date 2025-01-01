@@ -6,6 +6,8 @@ This repository contains a Helm chart to deploy dynamic environments for develop
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Helm](https://helm.sh/docs/intro/install/)
+- [Docker](https://docs.docker.com/get-docker/)
+
 
 ## Automated Setup
 
