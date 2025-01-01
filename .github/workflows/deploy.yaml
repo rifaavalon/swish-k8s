@@ -62,13 +62,15 @@ jobs:
           kubectl get all
           kubectl get ingress
 
+      - name: Wait for Pod to be Ready
+        run: |
+          # Wait for the pod to be created and ready
+          kubectl wait --for=condition=ready pod -l app=my-dynamic-environment --timeout=300s
+
       - name: Test Docker container
         run: |
           # Get the pod name
           POD_NAME=$(kubectl get pods -l app=my-dynamic-environment -o jsonpath="{.items[0].metadata.name}")
-
-          # Wait for the pod to be ready
-          kubectl wait --for=condition=ready pod/$POD_NAME --timeout=120s
 
           # Test port 8080
           kubectl exec $POD_NAME -- curl -sSf http://localhost:8080 || exit 1
