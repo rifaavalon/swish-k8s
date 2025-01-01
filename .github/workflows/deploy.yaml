@@ -47,6 +47,9 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 --push -t ${{ secrets.DOCKER_USERNAME }}/my-go-app:latest ./backend/app
 
+      - name: Make setup-prometheus.sh executable
+        run: chmod +x ./scripts/setup-prometheus.sh
+
       - name: Deploy Prometheus and Grafana
         run: ./scripts/setup-prometheus.sh
 
