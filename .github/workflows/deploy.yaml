@@ -61,3 +61,25 @@ jobs:
         run: |
           kubectl get all
           kubectl get ingress
+
+      - name: Debug Pods
+        run: |
+          echo "Listing all pods:"
+          kubectl get pods -A
+          echo "Describing all pods in the default namespace:"
+          kubectl describe pods
+
+      - name: Debug Events
+        run: |
+          echo "Listing all events:"
+          kubectl get events -A
+
+      - name: Wait for Pod to be Ready
+        run: |
+          # Wait for the pod to be created and ready
+          kubectl wait --for=condition=ready pod -l app=my-dynamic-environment --timeout=300s
+
+      - name: Show Running Pods
+        run: |
+          echo "Listing all running pods:"
+          kubectl get pods --field-selector=status.phase=Running
